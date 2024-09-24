@@ -2,8 +2,6 @@ package com.fa.library.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,39 +32,5 @@ public class Book {
         this.title = title;
         this.publisher = publisher;
         this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public static BookBuilder builder() {
-        return new BookBuilder();
-    }
-
-    public static final class BookBuilder {
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        private long id;
-        private String title;
-        private String publisher;
-        private String thumbnailUrl;
-
-        public BookBuilder() { }
-
-        public Book build() {
-            if (this.title == null || this.publisher == null) {
-                throw new IllegalArgumentException();
-            }
-            return new Book(id, title, publisher, thumbnailUrl);
-        }
-        public BookBuilder title(String title) {
-            this.title = title;
-            return this;
-        }
-        public BookBuilder publisher(String publisher) {
-            this.publisher = publisher;
-            return this;
-        }
-
-        public BookBuilder imageUrl(String thumbnailUrl) {
-            this.thumbnailUrl = thumbnailUrl;
-            return this;
-        }
     }
 }

@@ -5,6 +5,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7078/7078214.png">
   <title th:text="${book.title}">Библиотека Финансового Университета</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style-book.css}">
 </head>
@@ -23,13 +24,25 @@
       <span th:unless="${book.publisher!=null}">Издатель неизвестен</span>
       <br>
       На руках у студента: <span th:if="${book.studentName!=null}" th:text="${book.studentName}">studentName</span>
-      <span th:unless="${book.studentName!=null}">---------</span>
+      <span th:unless="${book.studentName!=null}">В библиотечном фонде</span>
       <br>
       Выдана: <span th:if="${book.issueDate!=null}" th:text="${book.issueDate}">issueDate</span>
-      <span th:unless="${book.issueDate!=null}">В библиотечном фонде</span>
+      <span th:unless="${book.issueDate!=null}">----------</span>
       <br>
       Возвращена: <span th:if="${book.returnDate!=null}" th:text="${book.returnDate}">returnDate</span>
-      <span th:unless="${book.returnDate!=null}">На руках</span>
+      <span th:unless="${book.studentName==null}">На руках</span>
+      <br>
+      <form th:action="@{issueBook}" method="post">
+        <input type="hidden" name="id" th:value="${book.id}" />
+        <label>
+          <input type="text" name="studentName" th:value="${book.studentName}" width="100px" required minlength="5" autocomplete="off"/>
+        </label>
+        <input type="submit" value="Выдать книгу студенту" class="btn btn-danger" th:disabled="${book.studentName != null}"/>
+      </form>
+      <form th:action="@{delete}" method="post">
+        <input type="hidden" name="id" th:value="${book.id}" />
+        <input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить книгу" class="btn btn-danger" />
+      </form>
     </div>
   </div>
 </body>

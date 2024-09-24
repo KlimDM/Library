@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${book.title}">Библиотека Финансового Университета</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style-book.css}">
+</head>
+<body>
+  <div class="main-layout">
+    <div class="item">
+      <div class="book-image-div">
+        <img class="book-image" th:if="${book.thumbnailUrl != null}" th:src="${book.thumbnailUrl}" width="300px" alt="Изображение недоступно">
+        <img src="images/noThumbnail.png" width="150px" th:unless="${book.thumbnailUrl!=null}"alt="Изображение недоступно"/>
+      </div>
+    </div>
+    <div class="item" style="text-align: left; vertical-align: middle; line-height: 40px">
+      <strong th:text="${book.title}">Book Title</strong>
+      <br>
+      Издатель: <span th:if="${book.publisher!=null}" th:text="${book.publisher}">publisher</span>
+      <span th:unless="${book.publisher!=null}">Издатель неизвестен</span>
+      <br>
+      На руках у студента: <span th:if="${book.studentName!=null}" th:text="${book.studentName}">studentName</span>
+      <span th:unless="${book.studentName!=null}">---------</span>
+      <br>
+      Выдана: <span th:if="${book.issueDate!=null}" th:text="${book.issueDate}">issueDate</span>
+      <span th:unless="${book.issueDate!=null}">В библиотечном фонде</span>
+      <br>
+      Возвращена: <span th:if="${book.returnDate!=null}" th:text="${book.returnDate}">returnDate</span>
+      <span th:unless="${book.returnDate!=null}">На руках</span>
+    </div>
+  </div>
+</body>
+</html>

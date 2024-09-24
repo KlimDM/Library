@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7078/7078214.png">
+  <title>Библиотека Финансового Университета</title>
+</head>
+
+<nav class="navbar navbar-expand-sm navbar-light p-3">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa fa-book" aria-hidden="true"></i> Библиотека</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav m-auto mt-2 mt-lg-2 ">
+
+        <li class="nav-item">
+          <a class="nav-link active" href="/"><i class="fa fa-home" aria-hidden="true"></i>  Начальная страница
+            <span class="visually-hidden"></span></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/addBook"><i class="fa fa-plus" aria-hidden="true"></i>  Добавить книгу</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="/search"><i class="fa fa-search" aria-hidden="true"></i>  Поиск книг</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/deleteBook"><i class="fa fa-trash" aria-hidden="true"></i>  Удалить книгу</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<body>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<div class="grid-container" th:unless="${#lists.isEmpty(books)}">
+
+  <div class="grid-item" th:each="sb : ${books}">
+    <div class="clickable-item"
+         th:id="${sb.id}" th:onclick="javascript:showBookDetails(this.getAttribute('id'));">
+      <div class="grid-item-img">
+        <img width="150px" th:if="${sb.thumbnailUrl != null}" th:src="${sb.thumbnailUrl}" alt="Изображение недоступно"/>
+        <img src="images/noThumbnail.png" width="150px" th:unless="${sb.thumbnailUrl != null}"alt="Изображение недоступно"/>
+      </div>
+      <div class="grid-item-title">
+        <p th:text="${sb.title}">Book Title</p>
+      </div>
+      <div class="grid-item-publisher">
+        Издатель: <span class="book-div-value" th:if="${sb.publisher != null}" th:text="${sb.publisher}">Издатель</span>
+        <span class="book-div-value" th:unless="${sb.publisher != null}">----------</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

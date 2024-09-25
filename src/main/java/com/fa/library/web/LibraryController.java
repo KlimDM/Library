@@ -5,11 +5,8 @@ import org.springframework.ui.Model;
 import com.fa.library.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,17 +21,17 @@ public class LibraryController {
      * Начальная страница приложения
      */
     @GetMapping
-    public String home(Model model) {
+    public String home() {
         return "home";
     }
 
     @ModelAttribute(name="books")
-    public List<Book> addBooksToModel(Model model) {
+    public List<Book> addBooksToModel() {
         return bookRepository.findAll();
     }
 
     @GetMapping("/book")
-    public String showBookDetails(@RequestParam("id") Long id, Model model) {
+    public String showBookDetails(@RequestParam("id") Long id, Model model, @ModelAttribute("books")List<Book> books) {
         model.addAttribute("book", bookRepository.findById(id).orElse(null));
         return "bookdetails";
     }
@@ -45,14 +42,34 @@ public class LibraryController {
         return "redirect:/";
     }
     @PostMapping("/issueBook")
-    public String issueBook(@RequestParam("id") long id, @RequestParam("studentName") String studentName,
-                            Model model) {
+    public String issueBook(@RequestParam("id") long id, @RequestParam("studentName") String studentName) {
         Book currentBook = bookRepository.findById(id).orElse(null);
         if (currentBook != null) {
             currentBook.setStudentName(studentName);
             currentBook.setIssueDate(LocalDate.now());
             bookRepository.save(currentBook);
         }
-        return showBookDetails(id, model);
+        bookRepository.findByKeyword("java");
+        return "redirect:/book?id=" + id;
+    }
+
+    @PostMapping("/returnBook")
+    public String returnBook(@RequestParam("id") long id) {
+        Book currentBook = bookRepository.findById(id).orElse(null);
+        if (currentBook != null) {
+            currentBook.setStudentName(null);
+            currentBook.setIssueDate(null);
+            currentBook.setReturnDate(LocalDate.now());
+            bookRepository.save(currentBook);
+        }
+        return "redirect:/book?id=" + id;
+    }
+
+    //TODO
+    @GetMapping("/search")
+    public String searchByKeyword(@RequestParam("keyword") String keyword, Model model) {
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("books", bookRepository.findByKeyword(keyword));
+        return "redirect:";
     }
 }

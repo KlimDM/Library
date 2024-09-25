@@ -27,11 +27,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/addBook"><i class="fa fa-plus" aria-hidden="true"></i>  Добавить книгу</a>
         </li>
-
-
-        <li class="nav-item">
-          <a class="nav-link" href="/search"><i class="fa fa-search" aria-hidden="true"></i>  Поиск книг</a>
-        </li>
       </ul>
     </div>
   </div>
@@ -39,20 +34,31 @@
 
 <body>
 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<div style="margin-left: 2%">
+  <label>
+    <input type="text" id="keyword" placeholder="Введите ключевые слова">
+  </label>
+  <button type="button" onclick="showSearchResult();">Поиск</button>
+<!--  <form th:action="@{search}" method="post">-->
+<!--    <label>-->
+<!--      <input type="text" name="keyword" th:value="${keyword}" height="130%" width="30%" placeholder="Поиск по ключевым словам"/>-->
+<!--    </label>-->
+<!--    <input type="submit" value="Поиск" class="btn bt-Secondary"/>-->
+<!--  </form>-->
+</div>
 <div class="grid-container" th:unless="${#lists.isEmpty(books)}">
-
   <div class="grid-item" th:each="sb : ${books}">
     <div class="clickable-item"
          th:id="${sb.id}" th:onclick="javascript:showBookDetails(this.getAttribute('id'));">
       <div class="grid-item-img">
         <img width="150px" th:if="${sb.thumbnailUrl != null}" th:src="${sb.thumbnailUrl}" alt="Изображение недоступно"/>
-        <img src="images/noThumbnail.png" width="150px" th:unless="${sb.thumbnailUrl != null}"alt="Изображение недоступно"/>
+        <img src="images/noThumbnail.png" width="150px" th:unless="${sb.thumbnailUrl != null}" alt="Изображение недоступно"/>
       </div>
       <div class="grid-item-title">
         <p th:text="${sb.title}">Book Title</p>
       </div>
       <div class="grid-item-publisher">
-        Издатель: <span class="book-div-value" th:if="${sb.publisher != null}" th:text="${sb.publisher}">Издатель</span>
+        Издательство: <span class="book-div-value" th:if="${sb.publisher != null}" th:text="${sb.publisher}">Издательство</span>
         <span class="book-div-value" th:unless="${sb.publisher != null}">----------</span>
       </div>
     </div>

@@ -6,42 +6,76 @@
 <head>
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7078/7078214.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7078/7078214.png">
   <title th:text="${book.title}">Библиотека Финансового Университета</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style-book.css}">
 </head>
+<nav class="navbar navbar-expand-sm navbar-light p-3">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa fa-book" aria-hidden="true"></i> Библиотека Финансового Университета</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav m-auto mt-2 mt-lg-2 ">
+
+        <li class="nav-item">
+          <a class="nav-link active" href="/"><i class="fa fa-home" aria-hidden="true"></i>  Домашняя страница
+            <span class="visually-hidden"></span></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/addBook"><i class="fa fa-plus" aria-hidden="true"></i>  Добавить книгу</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <body>
   <div class="main-layout">
     <div class="item">
       <div class="book-image-div">
         <img class="book-image" th:if="${book.thumbnailUrl != null}" th:src="${book.thumbnailUrl}" width="300px" alt="Изображение недоступно">
-        <img src="images/noThumbnail.png" width="150px" th:unless="${book.thumbnailUrl!=null}"alt="Изображение недоступно"/>
+        <img src="images/noThumbnail.png" width="150px" th:unless="${book.thumbnailUrl!=null}" alt="Изображение недоступно"/>
       </div>
     </div>
     <div class="item" style="text-align: left; vertical-align: middle; line-height: 40px">
-      <strong th:text="${book.title}">Book Title</strong>
+      <strong style="font-size: large" th:text="${book.title}">Book Title</strong>
       <br>
-      Издатель: <span th:if="${book.publisher!=null}" th:text="${book.publisher}">publisher</span>
-      <span th:unless="${book.publisher!=null}">Издатель неизвестен</span>
+      Издательство: <I th:if="${book.publisher!=null}" th:text="${book.publisher}">publisher</I>
+      <I th:unless="${book.publisher!=null}">Издатель неизвестен</I>
       <br>
-      На руках у студента: <span th:if="${book.studentName!=null}" th:text="${book.studentName}">studentName</span>
-      <span th:unless="${book.studentName!=null}">В библиотечном фонде</span>
+      <span th:if="${book.studentName!=null}">
+        На руках у студента: <strong th:text="${book.studentName}">ФИО Студента</strong>
+      </span>
+      <strong th:unless="${book.studentName!=null}">В библиотечном фонде</strong>
       <br>
-      Выдана: <span th:if="${book.issueDate!=null}" th:text="${book.issueDate}">issueDate</span>
-      <span th:unless="${book.issueDate!=null}">----------</span>
+      <span th:if="${book.issueDate!=null}">
+        Выдана: <b th:text="${book.issueDate}"/>
+      </span>
       <br>
-      Возвращена: <span th:if="${book.returnDate!=null}" th:text="${book.returnDate}">returnDate</span>
-      <span th:unless="${book.studentName==null}">На руках</span>
+      <span th:if="${book.returnDate!=null}">
+        Возвращена: <b th:text="${book.returnDate}"/>
+      </span>
       <br>
-      <form th:action="@{issueBook}" method="post">
+      <form th:action="@{issueBook}" method="post" th:if="${book.studentName == null}">
         <input type="hidden" name="id" th:value="${book.id}" />
         <label>
-          <input type="text" name="studentName" th:value="${book.studentName}" width="100px" required minlength="5" autocomplete="off"/>
+          <input type="text" th:name="studentName" width="100px" required minlength="5" autocomplete="off"/>
         </label>
-        <input type="submit" value="Выдать книгу студенту" class="btn btn-danger" th:disabled="${book.studentName != null}"/>
+        <input type="submit" value="Выдать книгу студенту"/>
+      </form>
+      <form th:action="@{returnBook}" method="post" th:if="${book.studentName != null}">
+        <input type="hidden" name="id" th:value="${book.id}" />
+        <input type="submit" value="Книга возвращена"/>
       </form>
       <form th:action="@{delete}" method="post">
         <input type="hidden" name="id" th:value="${book.id}" />
-        <input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить книгу" class="btn btn-danger" />
+        <input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить книгу"/>
       </form>
     </div>
   </div>

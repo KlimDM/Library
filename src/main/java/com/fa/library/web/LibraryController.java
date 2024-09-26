@@ -30,50 +30,6 @@ public class LibraryController {
         return bookRepository.findAll();
     }
 
-    @GetMapping("/book")
-    public String showBookDetails(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("book", bookRepository.findById(id).orElse(null));
-        return "bookdetails";
-    }
-
-    @PostMapping("/delete")
-    public String deleteBook(@RequestParam("id") long id, @ModelAttribute("books") List<Book> books) {
-        bookRepository.deleteById(id);
-        return "redirect:/";
-    }
-
-    //TODO
-    @GetMapping("/editBook")
-    @ModelAttribute("editMode")
-    public String editBook(@RequestParam("id") long id, Model model) {
-        model.addAttribute("editMode", true);
-        return "redirect:/book?id=" + id;
-    }
-
-    @PostMapping("/issueBook")
-    public String issueBook(@RequestParam("id") long id, @RequestParam("studentName") String studentName) {
-        Book currentBook = bookRepository.findById(id).orElse(null);
-        if (currentBook != null) {
-            currentBook.setStudentName(studentName);
-            currentBook.setIssueDate(LocalDate.now());
-            bookRepository.save(currentBook);
-        }
-        bookRepository.findByKeyword("java");
-        return "redirect:/book?id=" + id;
-    }
-
-    @PostMapping("/returnBook")
-    public String returnBook(@RequestParam("id") long id) {
-        Book currentBook = bookRepository.findById(id).orElse(null);
-        if (currentBook != null) {
-            currentBook.setStudentName(null);
-            currentBook.setIssueDate(null);
-            currentBook.setReturnDate(LocalDate.now());
-            bookRepository.save(currentBook);
-        }
-        return "redirect:/book?id=" + id;
-    }
-
     //TODO
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam("keyword") String keyword, Model model) {

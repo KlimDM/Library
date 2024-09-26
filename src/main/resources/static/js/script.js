@@ -1,5 +1,5 @@
 function showBookDetails(id) {
-    window.location.href = "/book?id=" + id;
+    window.location.href = "/book?id=" + id + "&" + "editMode=false";
 }
 
 function showSearchResult() {

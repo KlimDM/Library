@@ -43,7 +43,7 @@
         <img src="images/noThumbnail.png" width="150px" th:unless="${book.thumbnailUrl!=null}" alt="Изображение недоступно"/>
       </div>
     </div>
-    <div class="item" style="text-align: left; vertical-align: middle; line-height: 40px">
+    <div class="item" style="text-align: left; vertical-align: middle; line-height: 40px" th:if = "${!editMode}">
       <strong style="font-size: large" th:text="${book.title}">Book Title</strong>
       <br>
       Издательство: <I th:if="${book.publisher!=null}" th:text="${book.publisher}">publisher</I>
@@ -62,24 +62,50 @@
         Возвращена: <b th:text="${book.returnDate}"/>
       </span>
       <br>
-      <form th:action="@{issueBook}" method="post" th:if="${book.studentName == null}">
+      <form th:action="@{book/issueBook}" method="post" th:if="${book.studentName == null}">
         <input type="hidden" name="id" th:value="${book.id}" />
         <label>
           <input type="text" th:name="studentName" width="100px" required minlength="5"/>
         </label>
         <input type="submit" value="Выдать книгу студенту"/>
       </form>
-      <form th:action="@{returnBook}" method="post" th:if="${book.studentName != null}">
+      <form th:action="@{book/returnBook}" method="POST" th:if="${book.studentName != null}">
         <input type="hidden" name="id" th:value="${book.id}" />
         <input type="submit" value="Книга возвращена"/>
       </form>
-      <form th:action="@{editBook}" method="GET">
+      <form th:action="@{book/editBook}" method="GET">
         <input type="hidden" name="id" th:value="${book.id}" />
         <input type="submit" value="Редактировать"/>
       </form>
-      <form th:action="@{delete}" method="post">
+      <form th:action="@{book/delete}" method="POST">
         <input type="hidden" name="id" th:value="${book.id}" />
         <input type="submit" onclick="return confirm('Вы уверены?')" value="Удалить книгу"/>
+      </form>
+    </div>
+    <div class="item" style="text-align: left; vertical-align: middle; line-height: 40px" th:unless = "${!editMode}">
+      <form th:action="@{book/saveBook}" method="POST" th:object="${book}" class="form-control p-3">
+        <input type="hidden" name="id" th:value="${book.id}" />
+        <h1 style="margin-left: 1.6rem;"><strong>Редактировать информацию о книге</strong></h1>
+        <div class="row p-4">
+          <div class="col-sm-6">
+            <div class="mb-3">
+              <label>Название книги</label>
+              <input type="text" class="form-control" id="title"
+                     name="title" th:field="${book.title}" required minlength="3"/>
+            </div>
+            <div class="mb-3">
+              <label>Издательство</label>
+              <input type="text" class="form-control" id="publisher" name="publisher"
+                     th:field="${book.publisher}"/>
+            </div>
+            <div class="mb-3">
+              <label>Ссылка на изображение</label>
+              <input type="text" class="form-control" id="thumbnailUrl" name="thumbnailUrl"
+                     th:field="${book.thumbnailUrl}"/>
+            </div>
+          </div>
+        </div>
+        <button type="submit" style="margin-left: 1.6rem;">Сохранить изменения</button>
       </form>
     </div>
   </div>

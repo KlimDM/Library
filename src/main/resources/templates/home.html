@@ -57,58 +57,16 @@
       <div class="grid-item-title">
         <p th:text="${sb.title}">Book Title</p>
       </div>
-      <p th:text="${sb.issueDate}">aaaaaaa</p>
       <div class="grid-item-publisher">
         Издательство: <span class="book-div-value" th:if="${sb.publisher != null}" th:text="${sb.publisher}">Издательство</span>
         <span class="book-div-value" th:unless="${sb.publisher != null}">----------</span>
-
       </div>
     </div>
   </div>
+
 </div>
-<button th:onclick="showChart([[${books}]])">Показать график</button>
-<canvas id="myChart"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  function showBookDetails(id) {
-    window.location.href = "/book?id=" + id;
-  }
 
-  function showSearchResult() {
-    var inputField = document.getElementById("keyword");
-    const {value} = inputField
-    window.location.href = "/search?keyword=" + value;
-  }
-  const ctx = document.getElementById('myChart');
-  console.log('th:each="sb : ${books}"')
-
-  function showChart(array) {
-    const groupedByDate = array.reduce((acc,el)=>{
-      const {issueDate} = el
-      (issueDate in acc)?acc[issueDate].push(el):acc[issueDate] = [el]
-      return acc
-    },{})
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: Object.keys(groupedByDate).map(el => el === 'null' ? 'Не выданы' : el),
-        datasets: [{
-          label: 'Даты выдачи книг',
-          data: Object.values(groupedByDate).map(el=>el.length),
-          borderWidth: 2
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  }
-
-</script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 
 </html>

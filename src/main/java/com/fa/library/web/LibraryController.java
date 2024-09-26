@@ -31,7 +31,7 @@ public class LibraryController {
     }
 
     @GetMapping("/book")
-    public String showBookDetails(@RequestParam("id") Long id, Model model, @ModelAttribute("books")List<Book> books) {
+    public String showBookDetails(@RequestParam("id") Long id, Model model) {
         model.addAttribute("book", bookRepository.findById(id).orElse(null));
         return "bookdetails";
     }
@@ -41,6 +41,15 @@ public class LibraryController {
         bookRepository.deleteById(id);
         return "redirect:/";
     }
+
+    //TODO
+    @GetMapping("/editBook")
+    @ModelAttribute("editMode")
+    public String editBook(@RequestParam("id") long id, Model model) {
+        model.addAttribute("editMode", true);
+        return "redirect:/book?id=" + id;
+    }
+
     @PostMapping("/issueBook")
     public String issueBook(@RequestParam("id") long id, @RequestParam("studentName") String studentName) {
         Book currentBook = bookRepository.findById(id).orElse(null);

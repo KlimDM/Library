@@ -14,7 +14,7 @@
 </head>
 <nav class="navbar navbar-expand-sm navbar-light p-3">
   <div class="container">
-    <a class="navbar-brand" href="#"><i class="fa fa-book" aria-hidden="true"></i> Библиотека Финансового Университета</a>
+    <a class="navbar-brand" href="/"><i class="fa fa-book" aria-hidden="true"></i> Библиотека Финансового Университета</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
             aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -65,13 +65,17 @@
       <form th:action="@{issueBook}" method="post" th:if="${book.studentName == null}">
         <input type="hidden" name="id" th:value="${book.id}" />
         <label>
-          <input type="text" th:name="studentName" width="100px" required minlength="5" autocomplete="off"/>
+          <input type="text" th:name="studentName" width="100px" required minlength="5"/>
         </label>
         <input type="submit" value="Выдать книгу студенту"/>
       </form>
       <form th:action="@{returnBook}" method="post" th:if="${book.studentName != null}">
         <input type="hidden" name="id" th:value="${book.id}" />
         <input type="submit" value="Книга возвращена"/>
+      </form>
+      <form th:action="@{editBook}" method="GET">
+        <input type="hidden" name="id" th:value="${book.id}" />
+        <input type="submit" value="Редактировать"/>
       </form>
       <form th:action="@{delete}" method="post">
         <input type="hidden" name="id" th:value="${book.id}" />

@@ -4,6 +4,7 @@ import com.fa.library.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,7 +21,9 @@ public class BookService {
     }
 
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
+        books.sort(Comparator.comparing(Book::getIssueDate, Comparator.nullsLast(Comparator.reverseOrder())));
+        return books;
     }
 
     public void add(Book book) {

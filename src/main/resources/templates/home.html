@@ -37,6 +37,7 @@
 <div style="margin-left: 1.1%">
   <input type="text" id="keyword" th:value="${keyword}" placeholder="Введите ключевые слова" width="200px">
   <button type="button" onclick="showSearchResult();">Поиск</button>
+  <span style="margin-left: 92%">Книг на странице: <b th:text="${#lists.size(books)}"></b></span>
 </div>
 <div class="grid-container" th:unless="${#lists.isEmpty(books)}">
   <div class="grid-item" th:each="sb : ${books}">
@@ -55,7 +56,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="grid-container" th:if="${#lists.isEmpty(books)}">

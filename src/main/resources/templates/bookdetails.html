@@ -103,6 +103,15 @@
               <input type="text" class="form-control" id="thumbnailUrl" name="thumbnailUrl"
                      th:field="${book.thumbnailUrl}"/>
             </div>
+            <div class="mb-3" th:if="${book.studentName != null}">
+              <label>Имя студента</label>
+              <input type="text" class="form-control" id="studentName" name="studentName"
+                     th:field="${book.studentName}"/>
+              <input type="hidden" class="form-control" id="issueDate" name="issueDate"
+                     th:field="${book.issueDate}"/>
+            </div>
+            <input type="hidden" th:unless="${book.studentName != null}" class="form-control" id="returnDate" name="returnDate"
+                   th:field="${book.returnDate}"/>
           </div>
         </div>
         <button type="submit" style="margin-left: 1.6rem;">Сохранить изменения</button>

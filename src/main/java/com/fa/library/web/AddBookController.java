@@ -1,7 +1,7 @@
 package com.fa.library.web;
 
 import com.fa.library.model.Book;
-import com.fa.library.repository.BookRepository;
+import com.fa.library.repository.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/addBook")
 @RequiredArgsConstructor
 public class AddBookController {
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
     @GetMapping
     public String showAddBookForm(@ModelAttribute("newBook")Book newBook) {
@@ -28,7 +28,7 @@ public class AddBookController {
         if (newBook.getThumbnailUrl().equals("")) {
             newBook.setThumbnailUrl(null);
         }
-        bookRepository.save(newBook);
+        bookService.add(newBook);
         return "redirect:/";
     }
 }
